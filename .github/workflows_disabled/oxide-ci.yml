@@ -1,0 +1,167 @@
+on: [push, pull_request]
+
+name: Rust CI
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./oxide
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache toolchain
+        id: cache-install-toolchain
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-install-toolchain.outputs.cache-hit != 'true'
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Run check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./oxide
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache toolchain
+        id: cache-install-toolchain
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-install-toolchain.outputs.cache-hit != 'true'
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Run test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+  fmt:
+    name: Format
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./oxide
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache toolchain
+        id: cache-install-toolchain
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-install-toolchain.outputs.cache-hit != 'true'
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Run format
+        uses: actions-rs/cargo@v1
+        with:
+          command: fmt
+          args: --all -- --check
+
+  clippy:
+    name: Clippy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./oxide
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache toolchain
+        id: cache-install-toolchain
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-install-toolchain.outputs.cache-hit != 'true'
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Run clippy
+        uses: actions-rs/cargo@v1
+        with:
+          command: clippy
+          args: -- -D warnings
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./oxide
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Cache toolchain
+        id: cache-install-toolchain
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
+        if: steps.cache-install-toolchain.outputs.cache-hit != 'true'
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+      - name: Run build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
