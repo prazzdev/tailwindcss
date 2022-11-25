@@ -4,7 +4,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "napi": {
-    "name": "@tailwindcss/oxide",
+    "name": "tailwindcss-oxide",
     "triples": {
       "additional": [
         "aarch64-apple-darwin",

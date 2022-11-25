@@ -7,9 +7,9 @@
   "cpu": [
     "arm64"
   ],
-  "main": "@tailwindcss/oxide.android-arm64.node",
+  "main": "tailwindcss-oxide.android-arm64.node",
   "files": [
-    "@tailwindcss/oxide.android-arm64.node"
+    "tailwindcss-oxide.android-arm64.node"
   ],
   "license": "MIT",
   "engines": {
