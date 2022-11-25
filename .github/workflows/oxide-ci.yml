@@ -17,12 +17,12 @@ jobs:
           # Windows
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            binary: ${{ env.APP_NAME }}.exe
+            binary: '$APP_NAME.exe'
           # Mac OS
           - os: macos-latest
             target: x86_64-apple-darwin
             strip: strip -x # Must use -x on macOS. This produces larger results on linux.
-            binary: ${{ env.APP_NAME }}
+            binary: '$APP_NAME'
 
     name: build-${{ matrix.target }}
     runs-on: ${{ matrix.os }}
