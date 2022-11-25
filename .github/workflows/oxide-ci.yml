@@ -16,10 +16,6 @@ env:
       - .editorconfig
       - docs/**
   pull_request: null
-defaults:
-  run:
-    shell: bash
-    working-directory: ./oxide/crates/node
 jobs:
   build:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
@@ -126,6 +122,7 @@ jobs:
           override: true
           toolchain: stable
           target: ${{ matrix.settings.target }}
+      - run: cd ./oxide/crates/node/
       - name: Cache cargo
         uses: actions/cache@v3
         with:
@@ -181,6 +178,7 @@ jobs:
     name: Build FreeBSD
     steps:
       - uses: actions/checkout@v3
+      - run: cd ./oxide/crates/node/
       - name: Build
         id: build
         uses: vmactions/freebsd-vm@v0
@@ -253,6 +251,7 @@ jobs:
         with:
           path: .yarn/cache
           key: npm-cache-test-${{ matrix.settings.target }}-${{ matrix.node }}-${{ hashFiles('package-lock.json') }}
+      - run: cd ./oxide/crates/node/
       - name: Install dependencies
         run: npm run install
       - name: Download artifacts
@@ -285,6 +284,7 @@ jobs:
           node-version: ${{ matrix.node }}
           check-latest: true
           cache: npm
+      - run: cd ./oxide/crates/node/
       - name: Cache NPM dependencies
         uses: actions/cache@v3
         with:
@@ -327,6 +327,7 @@ jobs:
         with:
           path: .yarn/cache
           key: npm-cache-test-x86_64-unknown-linux-musl-${{ matrix.node }}
+      - run: cd ./oxide/crates/node/
       - name: Install dependencies
         run: |
           npm config set supportedArchitectures.libc "musl"
@@ -356,6 +357,7 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - run: cd ./oxide/crates/node/
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -391,6 +393,7 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - run: cd ./oxide/crates/node/
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -433,6 +436,7 @@ jobs:
     steps:
       - run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - uses: actions/checkout@v3
+      - run: cd ./oxide/crates/node/
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
@@ -483,6 +487,7 @@ jobs:
         with:
           path: .yarn/cache
           key: npm-cache-ubuntu-latest-publish
+      - run: cd ./oxide/crates/node/
       - name: Install dependencies
         run: npm install
       - name: Download all artifacts
