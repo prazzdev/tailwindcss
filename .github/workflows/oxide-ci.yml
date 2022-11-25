@@ -1,7 +1,7 @@
 name: Oxide CI
 env:
   DEBUG: napi:*
-  APP_NAME: '@tailwindcss/oxide'
+  APP_NAME: tailwindcss-oxide
   MACOSX_DEPLOYMENT_TARGET: '10.13'
 'on':
   push:
