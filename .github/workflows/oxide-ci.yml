@@ -185,7 +185,7 @@ jobs:
       - build
       - build-linux
       - build-apple-silicon
-      - build-wasm
+      # - build-wasm
     steps:
       - uses: actions/checkout@v1
       - uses: bahmutov/npm-install@v1.1.0
