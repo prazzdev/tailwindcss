@@ -48,7 +48,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ matrix.os }}-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ matrix.os }}-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -112,7 +112,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-macos-latest-apple-silicon-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -125,7 +125,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-macos-latest-apple-silicon-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -205,7 +205,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-linux-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -218,7 +218,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-linux-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -258,7 +258,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-ubuntu-latest-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -271,7 +271,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-ubuntu-latest-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
