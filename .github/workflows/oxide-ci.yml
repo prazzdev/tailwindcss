@@ -296,6 +296,9 @@ jobs:
         run: |
           echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
+      - name: Generate entry point
+        run: npm run build --prefix ./oxide/crates/node
+
       - name: Publish to npm
         run: |
           for pkg in ./oxide/crates/node/npm/*; do
