@@ -62,7 +62,7 @@ jobs:
         with:
           name: bindings-${{ matrix.target }}
           path: |
-            *.node
+            ./oxide/crates/node/*.node
             ${{ matrix.binary }}
 
   build-apple-silicon:
@@ -111,7 +111,7 @@ jobs:
         with:
           name: bindings-aarch64-apple-darwin
           path: |
-            *.node
+            ./oxide/crates/node/*.node
             ${{ env.APP_NAME }}
 
   build-linux:
@@ -182,7 +182,7 @@ jobs:
         with:
           name: bindings-${{ matrix.target }}
           path: |
-            *.node
+            ./oxide/crates/node/*.node
             ${{ env.APP_NAME }}
 
   release:
