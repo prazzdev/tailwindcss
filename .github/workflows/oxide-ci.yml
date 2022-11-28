@@ -288,6 +288,9 @@ jobs:
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
+      - name: Move artifacts
+        run: npm run artifacts --prefix ./oxide/crates/node
+
       - name: Publish to npm
         run: |
           for pkg in ./oxide/crates/node/npm/*; do
