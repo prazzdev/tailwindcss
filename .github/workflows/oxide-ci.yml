@@ -301,9 +301,9 @@ jobs:
           for pkg in ./oxide/crates/node/npm/*; do
             echo "Publishing $pkg..."
             npm version 0.0.0-insiders.${{ env.SHA_SHORT }} --force --no-git-tag-version
-            npm publish --dry-run $pkg
+            npm publish --dry-run --tag insiders $pkg
           done
 
           echo "Publishing ${{ env.APP_NAME }}...";
           npm version 0.0.0-insiders.${{ env.SHA_SHORT }} --force --no-git-tag-version
-          npm publish --dry-run ./oxide/crates/node
+          npm publish --dry-run --tag insiders ./oxide/crates/node
