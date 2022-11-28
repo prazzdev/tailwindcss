@@ -7,6 +7,7 @@ on:
 
 env:
   APP_NAME: tailwindcss-oxide
+  NODE_VERSION: 14
 
 jobs:
   build:
@@ -30,7 +31,8 @@ jobs:
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ env.NODE_VERSION }}
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -70,7 +72,7 @@ jobs:
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
@@ -136,7 +138,7 @@ jobs:
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install Rust
         uses: actions-rs/toolchain@v1
