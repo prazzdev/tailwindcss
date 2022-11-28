@@ -42,7 +42,10 @@ jobs:
         run: rustup target add ${{ matrix.target }}
 
       - name: NPM Install
-        run: npm install && npm run oxide:install
+        run: |
+          npm install
+          npm run swcify
+          npm run oxide:install
 
       - name: Build release
         run: npm run oxide:build
