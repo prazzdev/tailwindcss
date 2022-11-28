@@ -291,13 +291,13 @@ jobs:
       - name: Move artifacts
         run: |
           cd ./oxide/crates/node
-          cp bindings-aarch64-apple-darwin ./npm/darwin-arm64/tailwindcss-oxide.darwin-arm64.node
-          cp bindings-aarch64-unknown-linux-gnu ./npm/linux-arm64-gnu/tailwindcss-oxide.linux-arm64-gnu.node
-          cp bindings-aarch64-unknown-linux-musl ./npm/linux-arm64-musl/tailwindcss-oxide.linux-arm64-musl.node
-          cp bindings-armv7-unknown-linux-gnueabihf ./npm/linux-arm-gnueabihf/tailwindcss-oxide.linux-arm-gnueabihf.node
-          cp bindings-x86_64-apple-darwin ./npm/darwin-x64/tailwindcss-oxide.darwin-x64.node
-          cp bindings-x86_64-unknown-linux-gnu ./npm/linux-x64-gnu/tailwindcss-oxide.linux-x64-gnu.node
-          cp bindings-x86_64-unknown-linux-musl ./npm/linux-x64-musl/tailwindcss-oxide.linux-x64-musl.node
+          cp bindings-aarch64-apple-darwin/oxide/crates/node/* ./npm/darwin-arm64/
+          cp bindings-aarch64-unknown-linux-gnu/oxide/crates/* ./npm/linux-arm64-gnu/
+          cp bindings-aarch64-unknown-linux-musl/oxide/crates/* ./npm/linux-arm64-musl/
+          cp bindings-armv7-unknown-linux-gnueabihf/oxide/crates/* ./npm/linux-arm-gnueabihf/
+          cp bindings-x86_64-apple-darwin/oxide/crates/* ./npm/darwin-x64/
+          cp bindings-x86_64-unknown-linux-gnu/oxide/crates/* ./npm/linux-x64-gnu/
+          cp bindings-x86_64-unknown-linux-musl/oxide/crates/* ./npm/linux-x64-musl/
 
       - name: Resolve version
         id: vars
