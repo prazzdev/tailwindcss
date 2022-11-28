@@ -291,13 +291,19 @@ jobs:
       - name: Move artifacts
         run: npm run artifacts --prefix ./oxide/crates/node
 
+      - name: Resolve version
+        id: vars
+        run: |
+          echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Publish to npm
         run: |
           for pkg in ./oxide/crates/node/npm/*; do
             echo "Publishing $pkg..."
-            cd $pkg
-            npm publish --dry-run
-            cd -
+            npm version 0.0.0-insiders.${{ env.SHA_SHORT }} --force --no-git-tag-version
+            npm publish --dry-run $pkg
           done
+
           echo "Publishing ${{ env.APP_NAME }}...";
-          npm publish --dry-run
+          npm version 0.0.0-insiders.${{ env.SHA_SHORT }} --force --no-git-tag-version
+          npm publish --dry-run ./oxide/crates/node
