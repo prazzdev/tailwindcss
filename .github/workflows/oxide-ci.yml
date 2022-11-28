@@ -17,12 +17,10 @@ jobs:
           # Windows
           - os: windows-latest
             target: x86_64-pc-windows-msvc
-            # binary: '$APP_NAME.exe'
           # Mac OS
           - os: macos-latest
             target: x86_64-apple-darwin
             strip: strip -x # Must use -x on macOS. This produces larger results on linux.
-            # binary: '$APP_NAME'
 
     name: build-${{ matrix.target }}
     runs-on: ${{ matrix.os }}
@@ -49,13 +47,8 @@ jobs:
         run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
-      # - name: Build CLI
-      #   run: |
-      #     cargo build --release --features cli --target ${{ matrix.target }}
-      #     node -e "require('fs').renameSync('target/${{ matrix.target }}/release/${{ matrix.binary }}', '${{ matrix.binary }}')"
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
-        # run: ${{ matrix.strip }} *.node ${{ matrix.binary }}
         run: ${{ matrix.strip }} ./oxide/crates/node/*.node
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -92,19 +85,7 @@ jobs:
         env:
           RUST_TARGET: aarch64-apple-darwin
           JEMALLOC_SYS_WITH_LG_PAGE: 14
-      # - name: Build CLI
-      #   run: |
-      #     export CC=$(xcrun -f clang);
-      #     export CXX=$(xcrun -f clang++);
-      #     SYSROOT=$(xcrun --sdk macosx --show-sdk-path);
-      #     export CFLAGS="-isysroot $SYSROOT -isystem $SYSROOT";
-      #     export MACOSX_DEPLOYMENT_TARGET="10.9";
-      #     cargo build --release --features cli --target aarch64-apple-darwin
-      #     mv target/aarch64-apple-darwin/release/${{ env.APP_NAME }} ${{ env.APP_NAME }}
-      #   env:
-      #     JEMALLOC_SYS_WITH_LG_PAGE: 14
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
-        # run: strip -x *.node ${{ env.APP_NAME }}
         run: strip -x ./oxide/crates/node/*.node
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -169,13 +150,8 @@ jobs:
         run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
-      # - name: Build CLI
-      #   run: |
-      #     cargo build --release --features cli --target ${{ matrix.target }}
-      #     mv target/${{ matrix.target }}/release/${{ env.APP_NAME }} ${{ env.APP_NAME }}
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
-        # run: ${{ matrix.strip }} *.node ${{ env.APP_NAME }}
         run: ${{ matrix.strip }} ./oxide/crates/node/*.node
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -186,14 +162,12 @@ jobs:
             ${{ env.APP_NAME }}
 
   release:
-    if: false # Skip for now
     runs-on: ubuntu-latest
     name: Build and release
     needs:
       - build
       - build-linux
       - build-apple-silicon
-      # - build-wasm
     steps:
       - uses: actions/checkout@v1
       - name: NPM Install
@@ -202,25 +176,16 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           path: artifacts
-      - name: Build npm packages
-        run: |
-          node scripts/build-npm.js
-          node scripts/build-wasm.js
       - run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish to npm
-        if: false # Skip for now
         run: |
           for pkg in npm/*; do
             echo "Publishing $pkg..."
-            cd $pkg;
-            npm publish;
-            cd ../..;
+            cd $pkg
+            npm publish --dry-run
+            cd -
           done
-          cd cli
-          echo "Publishing ${{ env.APP_NAME }}-cli...";
-          npm publish
-          cd ..
           echo "Publishing ${{ env.APP_NAME }}...";
-          npm publish
+          npm publish --dry-run
