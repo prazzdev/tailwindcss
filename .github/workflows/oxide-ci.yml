@@ -291,7 +291,13 @@ jobs:
       - name: Move artifacts
         run: |
           cd ./oxide/crates/node
-          ls -l tailwindcss-oxide.*.node | cut -d" " -f12 | cut -d"." -f2 | xargs -I % cp ./tailwindcss-oxide.%.node ./npm/%/
+          cp bindings-aarch64-apple-darwin ./npm/darwin-arm64/tailwindcss-oxide.darwin-arm64.node
+          cp bindings-aarch64-unknown-linux-gnu ./npm/linux-arm64-gnu/tailwindcss-oxide.linux-arm64-gnu.node
+          cp bindings-aarch64-unknown-linux-musl ./npm/linux-arm64-musl/tailwindcss-oxide.linux-arm64-musl.node
+          cp bindings-armv7-unknown-linux-gnueabihf ./npm/linux-arm-gnueabihf/tailwindcss-oxide.linux-arm-gnueabihf.node
+          cp bindings-x86_64-apple-darwin ./npm/darwin-x64/tailwindcss-oxide.darwin-x64.node
+          cp bindings-x86_64-unknown-linux-gnu ./npm/linux-x64-gnu/tailwindcss-oxide.linux-x64-gnu.node
+          cp bindings-x86_64-unknown-linux-musl ./npm/linux-x64-musl/tailwindcss-oxide.linux-x64-musl.node
 
       - name: Resolve version
         id: vars
