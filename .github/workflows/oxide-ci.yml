@@ -26,6 +26,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
@@ -47,9 +48,11 @@ jobs:
         run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
+
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
         run: ${{ matrix.strip }} ./oxide/crates/node/*.node
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -63,10 +66,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
           node-version: 14
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -85,8 +90,10 @@ jobs:
         env:
           RUST_TARGET: aarch64-apple-darwin
           JEMALLOC_SYS_WITH_LG_PAGE: 14
+
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         run: strip -x ./oxide/crates/node/*.node
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -125,10 +132,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Install Node.JS
         uses: actions/setup-node@v3
         with:
           node-version: 14
+
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -150,9 +159,11 @@ jobs:
         run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
+
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
         run: ${{ matrix.strip }} ./oxide/crates/node/*.node
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -170,15 +181,19 @@ jobs:
       - build-apple-silicon
     steps:
       - uses: actions/checkout@v1
+
       - name: NPM Install
         run: npm install && npm run oxide:install
+
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
           path: artifacts
+
       - run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
       - name: Publish to npm
         run: |
           for pkg in npm/*; do
