@@ -295,7 +295,7 @@ jobs:
           cp bindings-aarch64-unknown-linux-gnu/oxide/crates/node/* ./npm/linux-arm64-gnu/
           cp bindings-aarch64-unknown-linux-musl/oxide/crates/node/* ./npm/linux-arm64-musl/
           cp bindings-armv7-unknown-linux-gnueabihf/oxide/crates/node/* ./npm/linux-arm-gnueabihf/
-          cp bindings-x86_64-apple-darwin/oxide/crates/node/* ./npm/darwin-x64/
+          cp bindings-x86_64-apple-darwin/* ./npm/darwin-x64/
           cp bindings-x86_64-unknown-linux-gnu/oxide/crates/node/* ./npm/linux-x64-gnu/
           cp bindings-x86_64-unknown-linux-musl/oxide/crates/node/* ./npm/linux-x64-musl/
 
