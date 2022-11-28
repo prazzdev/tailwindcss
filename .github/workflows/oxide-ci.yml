@@ -42,9 +42,11 @@ jobs:
       - name: Setup rust target
         run: rustup target add ${{ matrix.target }}
 
-      - uses: bahmutov/npm-install@v1.1.0
+      - name: NPM Install
+        run: npm install
+
       - name: Build release
-        run: yarn build-release
+        run: npm run build-release
         env:
           RUST_TARGET: ${{ matrix.target }}
       - name: Build CLI
@@ -81,9 +83,11 @@ jobs:
       - name: Setup rust target
         run: rustup target add aarch64-apple-darwin
 
-      - uses: bahmutov/npm-install@v1.1.0
+      - name: NPM Install
+        run: npm install
+
       - name: Build release
-        run: yarn build-release
+        run: npm run build-release
         env:
           RUST_TARGET: aarch64-apple-darwin
           JEMALLOC_SYS_WITH_LG_PAGE: 14
@@ -116,7 +120,6 @@ jobs:
           - target: x86_64-unknown-linux-gnu
             strip: strip
             image: docker.io/centos/nodejs-12-centos7
-            setup: npm install --global yarn@1
           - target: aarch64-unknown-linux-gnu
             strip: aarch64-linux-gnu-strip
             image: ghcr.io/napi-rs/napi-rs/nodejs-rust:lts-debian
@@ -157,9 +160,11 @@ jobs:
       - name: Setup rust target
         run: rustup target add ${{ matrix.target }}
 
-      - uses: bahmutov/npm-install@v1.1.0
+      - name: NPM Install
+        run: npm install
+
       - name: Build release
-        run: yarn build-release
+        run: npm run build-release
         env:
           RUST_TARGET: ${{ matrix.target }}
       - name: Build CLI
@@ -188,7 +193,8 @@ jobs:
       # - build-wasm
     steps:
       - uses: actions/checkout@v1
-      - uses: bahmutov/npm-install@v1.1.0
+      - name: NPM Install
+        run: npm install
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
