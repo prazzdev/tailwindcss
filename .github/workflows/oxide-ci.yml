@@ -198,7 +198,7 @@ jobs:
 
       - name: Publish to npm
         run: |
-          for pkg in npm/*; do
+          for pkg in ./oxide/crates/node/npm/*; do
             echo "Publishing $pkg..."
             cd $pkg
             npm publish --dry-run
