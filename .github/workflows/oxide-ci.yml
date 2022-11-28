@@ -43,10 +43,10 @@ jobs:
         run: rustup target add ${{ matrix.target }}
 
       - name: NPM Install
-        run: npm install
+        run: npm install && npm run oxide:install
 
       - name: Build release
-        run: npm run build-release
+        run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
       - name: Build CLI
@@ -84,10 +84,10 @@ jobs:
         run: rustup target add aarch64-apple-darwin
 
       - name: NPM Install
-        run: npm install
+        run: npm install && npm run oxide:install
 
       - name: Build release
-        run: npm run build-release
+        run: npm run oxide:build
         env:
           RUST_TARGET: aarch64-apple-darwin
           JEMALLOC_SYS_WITH_LG_PAGE: 14
@@ -161,10 +161,10 @@ jobs:
         run: rustup target add ${{ matrix.target }}
 
       - name: NPM Install
-        run: npm install
+        run: npm install && npm run oxide:install
 
       - name: Build release
-        run: npm run build-release
+        run: npm run oxide:build
         env:
           RUST_TARGET: ${{ matrix.target }}
       - name: Build CLI
@@ -194,7 +194,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: NPM Install
-        run: npm install
+        run: npm install && npm run oxide:install
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
