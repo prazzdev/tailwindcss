@@ -43,8 +43,31 @@ jobs:
       - name: Setup rust target
         run: rustup target add ${{ matrix.target }}
 
-      - name: NPM Install
-        run: npm install && npm run oxide:install
+      - name: Use cached main node_modules
+        id: cache-main
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (main)
+        if: steps.cache-main.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Use cached oxide node_modules
+        id: cache-oxide
+        uses: actions/cache@v3
+        with:
+          path: ./oxide/crates/node/node_modules
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (oxide)
+        if: steps.cache-oxide.outputs.cache-hit != 'true'
+        run: npm run oxide:install
 
       - name: Build release
         run: npm run oxide:build
@@ -84,8 +107,31 @@ jobs:
       - name: Setup rust target
         run: rustup target add aarch64-apple-darwin
 
-      - name: NPM Install
-        run: npm install && npm run oxide:install
+      - name: Use cached main node_modules
+        id: cache-main
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (main)
+        if: steps.cache-main.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Use cached oxide node_modules
+        id: cache-oxide
+        uses: actions/cache@v3
+        with:
+          path: ./oxide/crates/node/node_modules
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (oxide)
+        if: steps.cache-oxide.outputs.cache-hit != 'true'
+        run: npm run oxide:install
 
       - name: Build release
         run: npm run oxide:build
@@ -154,8 +200,31 @@ jobs:
       - name: Setup rust target
         run: rustup target add ${{ matrix.target }}
 
-      - name: NPM Install
-        run: npm install && npm run oxide:install
+      - name: Use cached main node_modules
+        id: cache-main
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (main)
+        if: steps.cache-main.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Use cached oxide node_modules
+        id: cache-oxide
+        uses: actions/cache@v3
+        with:
+          path: ./oxide/crates/node/node_modules
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (oxide)
+        if: steps.cache-oxide.outputs.cache-hit != 'true'
+        run: npm run oxide:install
 
       - name: Build release
         run: npm run oxide:build
@@ -184,8 +253,31 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: NPM Install
-        run: npm install && npm run oxide:install
+      - name: Use cached main node_modules
+        id: cache-main
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('./package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (main)
+        if: steps.cache-main.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Use cached oxide node_modules
+        id: cache-oxide
+        uses: actions/cache@v3
+        with:
+          path: ./oxide/crates/node/node_modules
+          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ env.NODE_VERSION }}
+          restore-keys: |
+            nodeModules-
+
+      - name: npm install (oxide)
+        if: steps.cache-oxide.outputs.cache-hit != 'true'
+        run: npm run oxide:install
 
       - name: Download artifacts
         uses: actions/download-artifact@v2
