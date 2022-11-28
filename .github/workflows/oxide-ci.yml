@@ -282,7 +282,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v2
         with:
-          path: artifacts
+          path: ./oxide/crates/node
 
       - run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
         env:
