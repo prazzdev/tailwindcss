@@ -289,7 +289,10 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Move artifacts
-        run: npm run artifacts --prefix ./oxide/crates/node
+        run: |
+          cd ./oxide/crates/node
+          npm run artifacts
+          ls -l tailwindcss-oxide.*.node | cut -d" " -f12 | cut -d"." -f2 | xargs -I % cp ./tailwindcss-oxide.%.node ./npm/%/
 
       - name: Resolve version
         id: vars
