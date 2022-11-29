@@ -8,6 +8,7 @@ on:
 env:
   APP_NAME: tailwindcss-oxide
   NODE_VERSION: 14
+  OXIDE_LOCATION: ./oxide/crates/node
 
 jobs:
   build:
@@ -60,8 +61,8 @@ jobs:
         id: cache-oxide
         uses: actions/cache@v3
         with:
-          path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-${{ matrix.os }}-${{ matrix.target }}-${{ env.NODE_VERSION }}
+          path: ${{ env.OXIDE_LOCATION }}/node_modules
+          key: nodeModules-${{ hashFiles('${{ env.OXIDE_LOCATION }}/package-lock.json') }}-${{ matrix.os }}-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -76,14 +77,14 @@ jobs:
 
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
-        run: ${{ matrix.strip }} ./oxide/crates/node/*.node
+        run: ${{ matrix.strip }} ${{ env.OXIDE_LOCATION }}/*.node
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.target }}
           path: |
-            ./oxide/crates/node/*.node
+            ${{ env.OXIDE_LOCATION }}/*.node
             ${{ matrix.binary }}
 
   build-apple-silicon:
@@ -124,8 +125,8 @@ jobs:
         id: cache-oxide
         uses: actions/cache@v3
         with:
-          path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-macos-latest-apple-silicon-${{ env.NODE_VERSION }}
+          path: ${{ env.OXIDE_LOCATION }}/node_modules
+          key: nodeModules-${{ hashFiles('${{ env.OXIDE_LOCATION }}/package-lock.json') }}-macos-latest-apple-silicon-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -140,14 +141,14 @@ jobs:
           JEMALLOC_SYS_WITH_LG_PAGE: 14
 
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
-        run: strip -x ./oxide/crates/node/*.node
+        run: strip -x ${{ env.OXIDE_LOCATION }}/*.node
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: bindings-aarch64-apple-darwin
           path: |
-            ./oxide/crates/node/*.node
+            ${{ env.OXIDE_LOCATION }}/*.node
             ${{ env.APP_NAME }}
 
   build-linux:
@@ -217,8 +218,8 @@ jobs:
         id: cache-oxide
         uses: actions/cache@v3
         with:
-          path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-linux-${{ matrix.target }}-${{ env.NODE_VERSION }}
+          path: ${{ env.OXIDE_LOCATION }}/node_modules
+          key: nodeModules-${{ hashFiles('${{ env.OXIDE_LOCATION }}/package-lock.json') }}-linux-${{ matrix.target }}-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -233,14 +234,14 @@ jobs:
 
       - name: Strip debug symbols # https://github.com/rust-lang/rust/issues/46034
         if: ${{ matrix.strip }}
-        run: ${{ matrix.strip }} ./oxide/crates/node/*.node
+        run: ${{ matrix.strip }} ${{ env.OXIDE_LOCATION }}/*.node
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: bindings-${{ matrix.target }}
           path: |
-            ./oxide/crates/node/*.node
+            ${{ env.OXIDE_LOCATION }}/*.node
             ${{ env.APP_NAME }}
 
   release:
@@ -270,8 +271,8 @@ jobs:
         id: cache-oxide
         uses: actions/cache@v3
         with:
-          path: ./oxide/crates/node/node_modules
-          key: nodeModules-${{ hashFiles('./oxide/crates/node/package-lock.json') }}-ubuntu-latest-${{ env.NODE_VERSION }}
+          path: ${{ env.OXIDE_LOCATION }}/node_modules
+          key: nodeModules-${{ hashFiles('${{ env.OXIDE_LOCATION }}/package-lock.json') }}-ubuntu-latest-${{ env.NODE_VERSION }}
           restore-keys: |
             nodeModules-
 
@@ -282,7 +283,7 @@ jobs:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
-          path: ./oxide/crates/node
+          path: ${{ env.OXIDE_LOCATION }}
 
       - run: echo //registry.npmjs.org/:_authToken=${NPM_TOKEN} > ~/.npmrc
         env:
@@ -290,7 +291,7 @@ jobs:
 
       - name: Move artifacts
         run: |
-          cd ./oxide/crates/node
+          cd ${{ env.OXIDE_LOCATION }}
           cp bindings-aarch64-apple-darwin/oxide/crates/node/* ./npm/darwin-arm64/
           cp bindings-aarch64-unknown-linux-gnu/oxide/crates/node/* ./npm/linux-arm64-gnu/
           cp bindings-aarch64-unknown-linux-musl/oxide/crates/node/* ./npm/linux-arm64-musl/
@@ -305,11 +306,11 @@ jobs:
           echo "NPM_VERSION=0.0.0-insiders.$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Generate entry point
-        run: npm run build --prefix ./oxide/crates/node
+        run: npm run build --prefix ${{ env.OXIDE_LOCATION }}
 
       - name: Publish to npm
         run: |
-          for pkg in ./oxide/crates/node/npm/*; do
+          for pkg in ${{ env.NAPI }}/npm/*; do
             echo "Publishing $pkg..."
             cd $pkg
             npm version ${{ env.NPM_VERSION }} --force --no-git-tag-version
@@ -318,7 +319,7 @@ jobs:
           done
 
           echo "Publishing ${{ env.APP_NAME }}...";
-          cd ./oxide/crates/node
+          cd ${{ env.OXIDE_LOCATION }}
           npm version ${{ env.NPM_VERSION }} --force --no-git-tag-version
           sed "s#\"0.0.0\"#\"${{ env.NPM_VERSION }}\"#g" package.json > package_updated.json
           mv package_updated.json package.json
