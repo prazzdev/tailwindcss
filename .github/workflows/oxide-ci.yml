@@ -320,7 +320,7 @@ jobs:
           echo "Publishing ${{ env.APP_NAME }}...";
           cd ./oxide/crates/node
           npm version 0.0.0-insiders.${{ env.SHA_SHORT }} --force --no-git-tag-version
-          sed "s#\"0.0.0\"#\"${{ env.SHA_SHORT }}\"#g" package.json > package_updated.json
+          sed "s#\"0.0.0\"#\"0.0.0-insiders.${{ env.SHA_SHORT }}\"#g" package.json > package_updated.json
           mv package_updated.json package.json
           npm publish --tag insiders --access public
           cd -
